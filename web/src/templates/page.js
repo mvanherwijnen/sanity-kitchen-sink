@@ -6,6 +6,7 @@ import InfoRows from "../components/InfoRows";
 import CTAColumns from "../components/cta-columns";
 import CTA from "../components/cta";
 import Pricing from "../components/pricing";
+import ClaimForm from "../components/ClaimForm"
 import { TopWave, BottomWave } from "../components/wave";
 
 import GraphQLErrorList from "../components/graphql-error-list";
@@ -63,6 +64,8 @@ const Page = (props) => {
 
   const page = data.page || data.route.page;
 
+  console.log(page._rawContent)
+
   const content = (page._rawContent || [])
     .filter((c) => !c.disabled)
     .map((c, i) => {
@@ -94,6 +97,9 @@ const Page = (props) => {
             default:
               break;
           }
+          break;
+        case "form": 
+          el = <ClaimForm>Hello</ClaimForm>
           break;
         default:
           el = null;

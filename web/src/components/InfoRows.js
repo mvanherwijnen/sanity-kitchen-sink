@@ -19,7 +19,7 @@ const maybeImage = illustration => {
     );
 
     img = (
-      <img className="w-full sm:h-64 mx-auto" src={fluidProps.src} alt={illustration.image.alt} />
+      <img className="h-64 mx-auto" src={fluidProps.src} alt={illustration.image.alt} />
     );
   }
   return img;
@@ -65,7 +65,7 @@ const InfoRows = props => {
     });
 
   return (
-    <section className="bg-white border-b py-8">
+    <section className="bg-white py-8">
       <div className="container max-w-5xl mx-auto m-8">
         <h1 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
           {props.title}

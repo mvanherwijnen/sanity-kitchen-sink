@@ -39,7 +39,7 @@ function Hero(props) {
         )}
       </div>
       {/* Right col */}
-      <div className="w-full md:w-3/5 py-6 text-center">{img}</div>
+      <div className="w-3/6 md:ml-16 py-6 text-center">{img}</div>
     </div>
   );
 }

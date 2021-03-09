@@ -45,7 +45,7 @@ const CTALink = props => {
   }
 
   return (
-    <Link className="mr-3" to={link}>
+    <Link className="hover:text-orange-500 mr-3" to={link}>
       {props.title}
     </Link>
   );
