@@ -59,7 +59,7 @@ exports.handler = async function(event, context) {
     }
 
     if (body.file) {
-      fs.writeFileSync(`/tmp/${body.file.filename}`, body.file.content, 'binary');
+      fs.writeFileSync(`/tmp/${body.file.filename}`, body.file.content, 'utf8');
       const fileResponse = await pipedriveClient.FilesController.addFile({
         file: `/tmp/${body.file.filename}`,
         dealId: dealResponse.data.id,
