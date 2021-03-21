@@ -10,11 +10,11 @@ exports.handler = async function(event, context) {
   person['email'] = body.email ? [body.email] : []
   person['phone'] = body.phone ? [body.phone] : []
 
-  const person = await pipedriveClient.PersonsController.addAPerson(person);
+  const personResponse = await pipedriveClient.PersonsController.addAPerson(person);
 
   let deal = [];
   deal['title'] = name;
-  deal['person_id'] = person.id;
+  deal['person_id'] = personResponse.id;
 
   const response = await pipedriveClient.DealsController.addADeal(deal);
 

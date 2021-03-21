@@ -14,6 +14,9 @@ const ClaimForm = props => {
       },
       body: JSON.stringify({
         firstName: e.target.elements.firstName.value,
+        lastName: e.target.elements.lastName.value,
+        email: e.target.elements.email.value,
+        phone: e.target.elements.phone.value,
       })
     })
     console.log(response.json());
