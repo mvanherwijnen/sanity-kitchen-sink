@@ -5,9 +5,10 @@ exports.handler = async function(event, context) {
     headers: {
       "Access-Control-Allow-Headers" : "Content-Type",
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "OPTIONS,POST"
+      "Access-Control-Allow-Methods": "OPTIONS,POST",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify({message: `Received this firstName: ${body?.firstName}`})
+    body: JSON.stringify({message: `Received this firstName: ${body ? body.firstName : undefined}`})
   };
 }
 
