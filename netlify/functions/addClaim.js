@@ -43,13 +43,12 @@ exports.handler = async function(event, context) {
     console.log(dealResponse)
   
     if (body.situation) {
-      const noteResponse = await pipedriveClient.NotesController.addANote({
-        contentType: 'application/json',
-        body: {
+      const noteResponse = await pipedriveClient.NotesController.addANote(
+        {
           content: `<p>${body.situation}</p>`,
           deal_id: dealResponse.data.id
         }
-      });
+      );
       console.log(noteResponse)
     }
 
