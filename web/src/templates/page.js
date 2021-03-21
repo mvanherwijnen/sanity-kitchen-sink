@@ -64,8 +64,6 @@ const Page = (props) => {
 
   const page = data.page || data.route.page;
 
-  console.log(page._rawContent)
-
   const content = (page._rawContent || [])
     .filter((c) => !c.disabled)
     .map((c, i) => {

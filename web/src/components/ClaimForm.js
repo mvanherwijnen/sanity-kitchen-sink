@@ -4,8 +4,20 @@ const ClaimForm = props => {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const submit = (e) => {
+  const submit = async (e) => {
+    console.log('hello');
     e.preventDefault();
+    console.log(e.target.elements.firstName.value);
+    const response = await fetch('https://sanity-kitchen-sink-web-czm4m4j6.netlify.app/.netlify/functions/addClaim', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        firstName: e.target.elements.firstName.value,
+      })
+    })
+    console.log(response);
     setSubmitted(true);
   }
 
