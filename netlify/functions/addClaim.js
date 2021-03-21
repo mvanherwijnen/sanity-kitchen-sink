@@ -16,11 +16,7 @@ exports.handler = async function(event, context) {
     };
   }
   console.log(event.body);
-  if (event.isBase64Encoded) {         
-    event.body = Buffer.from(event.body, 'base64').toString();     
-  }
-  const body = multipartParser.parse(event, false);
-  console.log(body);
+  const body = parseBody(event.body);
 
   pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
   const name = `${body.firstName} ${body.lastName}`;
@@ -59,7 +55,7 @@ exports.handler = async function(event, context) {
     }
 
     if (body.file) {
-      fs.writeFileSync(`/tmp/${body.file.filename}`, body.file.content, 'utf8');
+      fs.writeFileSync(`/tmp/${body.file.filename}`, body.file.content, 'base64');
       const fileResponse = await pipedriveClient.FilesController.addFile({
         file: `/tmp/${body.file.filename}`,
         dealId: dealResponse.data.id,
@@ -81,3 +77,10 @@ exports.handler = async function(event, context) {
     console.log(e.message);
   }
 }
+
+const parseBody = (event) => {
+  if (!event.body || event.body.length === 0) {
+    return undefined;
+  }
+  return JSON.parse(event.body);
+};
