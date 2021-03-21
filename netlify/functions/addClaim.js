@@ -1,5 +1,23 @@
+
+
 exports.handler = async function(event, context) {
   const body = parseBody(event);
+  const pipedriveClient = require('pipedrive');
+  pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
+  const name = `${body.firstName} ${body.lastName}`;
+  let person = [];
+  person['name'] = name;
+  person['email'] = body.email ? [body.email] : []
+  person['phone'] = body.phone ? [body.phone] : []
+
+  const person = await pipedriveClient.PersonsController.addAPerson(person);
+
+  let deal = [];
+  deal['title'] = name;
+  deal['person_id'] = person.id;
+
+  const response = await pipedriveClient.DealsController.addADeal(deal);
+
   return {
     statusCode: 200,
     headers: {
@@ -8,7 +26,7 @@ exports.handler = async function(event, context) {
       "Access-Control-Allow-Methods": "OPTIONS,POST",
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({message: `Received this firstName: ${body ? body.firstName : undefined}`})
+    body: JSON.stringify({message: `Received this response`, response})
   };
 }
 
