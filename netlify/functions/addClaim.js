@@ -19,7 +19,7 @@ exports.handler = async function(event, context) {
   if (event.isBase64Encoded) {         
     event.body = Buffer.from(event.body, 'base64').toString();     
   }
-  const body = multipartParser.parse(event, true);
+  const body = multipartParser.parse(event, false);
   console.log(body);
 
   pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
