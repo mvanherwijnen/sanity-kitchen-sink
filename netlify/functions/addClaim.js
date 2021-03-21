@@ -23,7 +23,7 @@ exports.handler = async function(event, context) {
       contentType: 'application/json',
       body: {
         title: name,
-        person_id: personResponse.id,
+        person_id: personResponse.data.id,
       }
     };
     
@@ -35,25 +35,25 @@ exports.handler = async function(event, context) {
         contentType: 'application/json',
         body: {
           content: `<p>${body.situation}</p>`,
-          deal_id: dealResponse.id
+          deal_id: dealResponse.data.id
         }
       });
       console.log(noteResponse)
     }
-  } catch (e) {
-    console.log (e.message);
-  }
 
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Headers" : "Content-Type",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "OPTIONS,POST",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({message: `Received this response`, dealResponse})
-  };
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Headers" : "Content-Type",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,POST",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({message: `Received this response`, dealResponse})
+    };
+  } catch (e) {
+    console.log(e.message);
+  }
 }
 
 const parseBody = (event) => {
