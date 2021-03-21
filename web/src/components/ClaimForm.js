@@ -6,18 +6,15 @@ const ClaimForm = props => {
 
   const submit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('firstName', e.target.elements.firstName.value);
+    formData.append('lastName', e.target.elements.lastName.value);
+    formData.append('email', e.target.elements.email.value);
+    formData.append('phone', e.target.elements.phone.value);
+    formData.append('situation', e.target.elements.situation.value);
     const response = await fetch('https://sanity-kitchen-sink-web-czm4m4j6.netlify.app/.netlify/functions/addClaim', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        firstName: e.target.elements.firstName.value,
-        lastName: e.target.elements.lastName.value,
-        email: e.target.elements.email.value,
-        phone: e.target.elements.phone.value,
-        situation: e.target.elements.situation.value
-      })
+      body: formData,
     })
     console.log(response.json());
     setSubmitted(true);

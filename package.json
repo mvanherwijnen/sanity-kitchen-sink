@@ -18,6 +18,8 @@
     "lerna": "^3.22.1"
   },
   "dependencies": {
+    "formidable": "^1.2.2",
+    "formidable-serverless": "^1.1.1",
     "pipedrive": "^10.4.3"
   }
 }

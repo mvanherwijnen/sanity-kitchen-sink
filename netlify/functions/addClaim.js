@@ -1,4 +1,5 @@
-
+const pipedriveClient = require('pipedrive');
+const { IncomingForm } = require('formidable-serverless');
 
 exports.handler = async function(event, context) {
   if (event.httpMethod === 'OPTIONS') {
@@ -14,9 +15,14 @@ exports.handler = async function(event, context) {
     };
   }
   console.log(event.body);
-  const body = parseBody(event);
-  const pipedriveClient = require('pipedrive');
-  pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
+  const form = IncomingForm({multiples: true});
+  form.parse(event, function (err, fields, files) {
+    console.log(err);
+    console.log(fields);
+    console.log(files);
+  });
+
+  /*pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
   const name = `${body.firstName} ${body.lastName}`;
   const person = {
     contentType: 'application/json',
@@ -52,6 +58,8 @@ exports.handler = async function(event, context) {
       console.log(noteResponse)
     }
 
+    const fileResponse = await pipedriveClient.FilesController.addFile()
+
     return {
       statusCode: 200,
       headers: {
@@ -60,16 +68,9 @@ exports.handler = async function(event, context) {
         "Access-Control-Allow-Methods": "OPTIONS,POST",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({message: `Received this response`, dealResponse})
+      body: JSON.stringify({message: `Received this response`, dealId: dealResponse.data.id})
     };
   } catch (e) {
     console.log(e.message);
-  }
+  }*/
 }
-
-const parseBody = (event) => {
-  if (!event.body || event.body.length === 0) {
-    return undefined;
-  }
-  return JSON.parse(event.body);
-};
