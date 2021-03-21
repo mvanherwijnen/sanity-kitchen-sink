@@ -77,5 +77,5 @@ exports.handler = async function(event, context) {
     };
   } catch (e) {
     console.log(e.message);
-  }*/
+  }
 }
