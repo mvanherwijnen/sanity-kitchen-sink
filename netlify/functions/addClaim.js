@@ -7,34 +7,43 @@ exports.handler = async function(event, context) {
   pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
   const name = `${body.firstName} ${body.lastName}`;
   const person = {
-    name,
-    email: body.email ? [body.email] : [],
-    phone: body.phone ? [body.phone] : []
+    contentType: 'application/json',
+    body: {
+      name,
+      email: body.email ? [body.email] : [],
+      phone: body.phone ? [body.phone] : []
+    }
   }
 
   try {
     const personResponse = await pipedriveClient.PersonsController.addAPerson(person);
-    console.log(personResponse)
+    console.log(personResponse);
+
+    const deal = {
+      contentType: 'application/json',
+      body: {
+        title: name,
+        person_id: personResponse.id,
+      }
+    };
+    
+    const dealResponse = await pipedriveClient.DealsController.addADeal(deal);
+    console.log(dealResponse)
+  
+    if (body.situation) {
+      const noteResponse = await pipedriveClient.NotesController.addANote({
+        contentType: 'application/json',
+        body: {
+          content: `<p>${body.situation}</p>`,
+          deal_id: dealResponse.id
+        }
+      });
+      console.log(noteResponse)
+    }
   } catch (e) {
     console.log (e.message);
   }
 
-  const deal = {
-    title: name,
-    person_id: personResponse.id,
-  };
-  
-  const dealResponse = await pipedriveClient.DealsController.addADeal(deal);
-  console.log(dealResponse)
-
-  if (body.situation) {
-    const noteResponse = await pipedriveClient.NotesController.addANote({
-      content: `<p>${body.situation}</p>`,
-      deal_id: dealResponse.id
-    });
-    console.log(noteResponse)
-  }
-  
   return {
     statusCode: 200,
     headers: {
