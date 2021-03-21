@@ -1,4 +1,5 @@
 exports.handler = async function(event, context) {
+  const body = parseBody(event);
   return {
     statusCode: 200,
     headers: {
@@ -6,6 +7,13 @@ exports.handler = async function(event, context) {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "OPTIONS,POST"
     },
-    body: JSON.stringify({message: `Received this firstName: ${JSON.parse(event.body).firstName}`})
+    body: JSON.stringify({message: `Received this firstName: ${body?.firstName}`})
   };
 }
+
+const parseBody = (event) => {
+  if (!event.body || event.body.length === 0) {
+    return undefined;
+  }
+  return JSON.parse(event.body);
+};
