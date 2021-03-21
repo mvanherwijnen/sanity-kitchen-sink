@@ -59,7 +59,7 @@ exports.handler = async function(event, context) {
     }
 
     if (body.file) {
-      fs.writeFile('temp.gif', body.file.content, (err) => {
+      fs.writeFile('temp.gif', body.file.content, async (err) => {
         if (err) {
           console.log(err);
         }
@@ -71,7 +71,6 @@ exports.handler = async function(event, context) {
       })
     }
     
-
     return {
       statusCode: 200,
       headers: {
