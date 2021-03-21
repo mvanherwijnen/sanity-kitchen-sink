@@ -15,6 +15,9 @@ exports.handler = async function(event, context) {
     };
   }
   console.log(event.body);
+  if (event.isBase64Encoded) {         
+    event.body = Buffer.from(event.body, 'base64').toString();     
+  }
   const data = multipartParser.parse(event, true)
   console.log(data);
 
