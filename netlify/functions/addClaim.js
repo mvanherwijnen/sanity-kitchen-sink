@@ -59,16 +59,12 @@ exports.handler = async function(event, context) {
     }
 
     if (body.file) {
-      fs.writeFile('temp.gif', body.file.content, async (err) => {
-        if (err) {
-          console.log(err);
-        }
-        const fileResponse = await pipedriveClient.FilesController.addFile({
-          file: 'temp.gif',
-          dealId: dealResponse.data.id,
-        })
-        console.log(fileResponse)
+      fs.writeFileSync(`/tmp/${body.file.filename}`, body.file.content);
+      const fileResponse = await pipedriveClient.FilesController.addFile({
+        file: `/tmp/${body.file.filename}`,
+        dealId: dealResponse.data.id,
       })
+      console.log(fileResponse)
     }
     
     return {
