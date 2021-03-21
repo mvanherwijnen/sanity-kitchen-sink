@@ -6,18 +6,35 @@ const ClaimForm = props => {
 
   const submit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('firstName', e.target.elements.firstName.value);
-    formData.append('lastName', e.target.elements.lastName.value);
-    formData.append('email', e.target.elements.email.value);
-    formData.append('phone', e.target.elements.phone.value);
-    formData.append('situation', e.target.elements.situation.value);
-    const response = await fetch('https://sanity-kitchen-sink-web-czm4m4j6.netlify.app/.netlify/functions/addClaim', {
-      method: 'POST',
-      body: formData,
-    })
-    console.log(response.json());
-    setSubmitted(true);
+
+    const file = document.querySelector('#file > input[type="file"]').files[0];
+
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async function () {
+      const response = await fetch('https://sanity-kitchen-sink-web-czm4m4j6.netlify.app/.netlify/functions/addClaim', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          firstName: e.target.elements.firstName.value,
+          lastName: e.target.elements.lastName.value,
+          email: e.target.elements.email.value,
+          phone: e.target.elements.phone.value,
+          situation: e.target.elements.situation.value,
+          file: {
+            filename: file.name,
+            content: reader.result.split(',')[1],
+          }
+        })
+      })
+      console.log(response.json());
+      setSubmitted(true);
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
   }
 
   return <section className="bg-white py-8 text-black">
@@ -40,7 +57,7 @@ const ClaimForm = props => {
         Email
       <input name='email' type='text' className='border'/>
       </label>
-      <label className='flex flex-col mb-2'>
+      <label id='file' className='flex flex-col mb-2'>
         Aangifte
       <input name='file' type='file'/>
       </label>
