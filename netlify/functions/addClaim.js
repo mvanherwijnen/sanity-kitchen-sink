@@ -1,5 +1,4 @@
 const pipedriveClient = require('pipedrive');
-const multipartParser = require('aws-lambda-multipart-parser');
 const fs = require('fs');
 
 exports.handler = async function(event, context) {
@@ -16,7 +15,7 @@ exports.handler = async function(event, context) {
     };
   }
   console.log(event.body);
-  const body = parseBody(event.body);
+  const body = parseBody(event);
 
   pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
   const name = `${body.firstName} ${body.lastName}`;
