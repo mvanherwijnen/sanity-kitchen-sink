@@ -1,7 +1,7 @@
 
 
 exports.handler = async function(event, context) {
-  console.log('requestBody', event.body);
+  console.log(event.body);
   const body = parseBody(event);
   const pipedriveClient = require('pipedrive');
   pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
@@ -12,8 +12,12 @@ exports.handler = async function(event, context) {
     phone: body.phone ? [body.phone] : []
   }
 
-  const personResponse = await pipedriveClient.PersonsController.addAPerson(person);
-  console.log('person', personResponse)
+  try {
+    const personResponse = await pipedriveClient.PersonsController.addAPerson(person);
+    console.log(personResponse)
+  } catch (e) {
+    console.log (e.message);
+  }
 
   const deal = {
     title: name,
@@ -21,14 +25,14 @@ exports.handler = async function(event, context) {
   };
   
   const dealResponse = await pipedriveClient.DealsController.addADeal(deal);
-  console.log('deal', dealResponse)
+  console.log(dealResponse)
 
   if (body.situation) {
     const noteResponse = await pipedriveClient.NotesController.addANote({
       content: `<p>${body.situation}</p>`,
       deal_id: dealResponse.id
     });
-    console.log('note', noteResponse)
+    console.log(noteResponse)
   }
   
   return {
