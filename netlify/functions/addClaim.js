@@ -15,7 +15,7 @@ exports.handler = async function(event, context) {
     };
   }
   console.log(event.body);
-  const data = multipartParser(event, true)
+  const data = multipartParser.parse(event, true)
   console.log(data);
 
   /*pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
