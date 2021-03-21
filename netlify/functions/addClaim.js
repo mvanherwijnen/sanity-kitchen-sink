@@ -1,5 +1,6 @@
 const pipedriveClient = require('pipedrive');
 const multipartParser = require('aws-lambda-multipart-parser');
+const fs = require('fs');
 
 exports.handler = async function(event, context) {
   if (event.httpMethod === 'OPTIONS') {
@@ -18,7 +19,8 @@ exports.handler = async function(event, context) {
   if (event.isBase64Encoded) {         
     event.body = Buffer.from(event.body, 'base64').toString();     
   }
-  const body = multipartParser.parse(event, true)
+  const body = multipartParser.parse(event, true);
+  console.log(body);
 
   pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
   const name = `${body.firstName} ${body.lastName}`;
@@ -57,11 +59,16 @@ exports.handler = async function(event, context) {
     }
 
     if (body.file) {
-      const fileResponse = await pipedriveClient.FilesController.addFile({
-        file: body.file.content,
-        dealId: dealResponse.data.id,
+      fs.writeFile('temp.gif', body.file.content, (err) => {
+        if (err) {
+          console.log(err);
+        }
+        const fileResponse = await pipedriveClient.FilesController.addFile({
+          file: 'temp.gif',
+          dealId: dealResponse.data.id,
+        })
+        console.log(fileResponse)
       })
-      console.log(fileResponse)
     }
     
 
