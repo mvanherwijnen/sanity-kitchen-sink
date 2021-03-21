@@ -18,10 +18,9 @@ exports.handler = async function(event, context) {
   if (event.isBase64Encoded) {         
     event.body = Buffer.from(event.body, 'base64').toString();     
   }
-  const data = multipartParser.parse(event, true)
-  console.log(data);
+  const body = multipartParser.parse(event, true)
 
-  /*pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
+  pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
   const name = `${body.firstName} ${body.lastName}`;
   const person = {
     contentType: 'application/json',
@@ -57,7 +56,14 @@ exports.handler = async function(event, context) {
       console.log(noteResponse)
     }
 
-    const fileResponse = await pipedriveClient.FilesController.addFile()
+    if (body.file) {
+      const fileResponse = await pipedriveClient.FilesController.addFile({
+        file: body.file.content,
+        dealId: dealResponse.data.id,
+      })
+      console.log(fileResponse)
+    }
+    
 
     return {
       statusCode: 200,
