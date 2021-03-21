@@ -1,5 +1,5 @@
 const pipedriveClient = require('pipedrive');
-const { IncomingForm } = require('formidable-serverless');
+const multipartParser = require('aws-lambda-multipart-parser');
 
 exports.handler = async function(event, context) {
   if (event.httpMethod === 'OPTIONS') {
@@ -15,12 +15,8 @@ exports.handler = async function(event, context) {
     };
   }
   console.log(event.body);
-  const form = IncomingForm({multiples: true});
-  form.parse(event, function (err, fields, files) {
-    console.log(err);
-    console.log(fields);
-    console.log(files);
-  });
+  const data = multipartParser(event, true)
+  console.log(data);
 
   /*pipedriveClient.Configuration.apiToken = process.env.PIPEDRIVE_API_TOKEN;
   const name = `${body.firstName} ${body.lastName}`;
